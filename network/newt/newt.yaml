@@ -9,6 +9,9 @@ depends:
   - configuration: true
 container:
   entrypoint: /usr/local/bin/newt
+  security:
+    writeableRootfs: false
+    writeableSysfs: true
   mounts:
   # Mount CA root certificates as the endpoints will be signed by Let's Encrypt
   - source: /etc/ssl/certs
@@ -17,4 +20,11 @@ container:
     options:
       - rbind
       - ro
+  ## Newt state. Particularly its config.
+  - source: /.config/newt-client/
+    destination: /.config/newt-client/
+    type: bind
+    options:
+      - bind
+      - rw
 restart: always
